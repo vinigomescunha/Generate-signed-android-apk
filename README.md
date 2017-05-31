@@ -5,5 +5,7 @@ How to use
 
 bash ./generate-signed-apk.sh
 
-1-select directory of android build tools version
+
+1-select directory of android build tools version and apk file
+
 2-insert data from keystore
