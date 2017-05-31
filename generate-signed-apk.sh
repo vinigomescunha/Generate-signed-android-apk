@@ -1,4 +1,5 @@
 #!/bin/bash
+# vinigomescunha 
 # File to sign apk unsigned based 
 # set version of build tools, initially set as empty string
 BUILDTOOLS_VERSION=""
@@ -30,13 +31,13 @@ function verifying_sdk_installed {
 }
 function set_build_version {
   # select build version directory
-  FOLDER_SELECTED=$(zenity --file-selection --directory --title="Escolha a versao da build que deseja configurar(selecione o diretorio)" --filename=$ANDROID_HOME/build-tools/)
+  FOLDER_SELECTED=$(zenity --file-selection --directory --title="Choose the version of the build you want to configure(Select the directory)" --filename=$ANDROID_HOME/build-tools/)
   # set build tools version based directory name
   BUILDTOOLS_VERSION="$(basename $FOLDER_SELECTED)"
 }
 function set_apk_data {
   # select apk unsigned
-  FILE_SELECTED=$(zenity --file-selection --file-filter='APK Files (apk) | *.apk' --title="Selecione uma APK")
+  FILE_SELECTED=$(zenity --file-selection --file-filter='APK Files (apk) | *.apk' --title="Select an APK")
   # set apk unsigned name depend of the selection
   APK_UNSIGNED="$FILE_SELECTED"
   # set apk signed name apk unsigned name based
@@ -46,7 +47,7 @@ function set_keystore_data {
   # set keystore file apk name based
   KEYSTORE_FILE="$(dirname $APK_UNSIGNED)/$(basename ${APK_UNSIGNED%.*}).keystore"
   # input select alias to keystore
-  DIALOG=$(zenity --forms --title="Adicionar Informacoes da Keystore" --text="Enter information about your .keystore." --separator=";" --add-entry="Alias da Keystore*"  --add-password="Senha(min. 6)*" --add-entry="First Name" --add-entry="Last Name" --add-entry="Organization" --add-entry="City" --add-entry="State or Province" --add-entry="two-letter country code")
+  DIALOG=$(zenity --forms --title="Add Keystore Information" --text="Enter information about your .keystore." --separator=";" --add-entry="Keystore alias*"  --add-password="Password(min. 6)*" --add-entry="First Name" --add-entry="Last Name" --add-entry="Organization" --add-entry="City" --add-entry="State or Province" --add-entry="two-letter country code")
   KEYSTORE=(${DIALOG//;/ })
 }
 function generate_keystore {
@@ -64,9 +65,9 @@ function sign_apk {
 function verify_apk {
   # verify if is signed
   if [[ $(eval "$ANDROID_HOME/build-tools/$BUILDTOOLS_VERSION/apksigner verify $APK_SIGNED 2>&1") ]]; then
-    zenity --error --text="Falha na assinatura da apk gerada: $APK_SIGNED"
+    zenity --error --text="Signing failed apk failed: $APK_SIGNED"
   else
-    zenity --info --text "Apk assinada com sucesso: $APK_SIGNED" 2>/dev/null
+    zenity --info --text "Apk signed successfully: $APK_SIGNED" 2>/dev/null
   fi
 }
 function generate_info {
